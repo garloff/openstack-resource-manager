@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 #
 # source: https://github.com/sapcc/openstack-nannies

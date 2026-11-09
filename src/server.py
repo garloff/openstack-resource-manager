@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 from datetime import datetime, timezone
 import sys
+import os
 
 from dateutil import parser
 from loguru import logger
@@ -9,11 +11,13 @@ import openstack
 from oslo_config import cfg
 from prompt_toolkit import prompt
 
+default_cloud = os.getenv("OS_CLOUD") or "service"
+
 PROJECT_NAME = "server"
 CONF = cfg.CONF
 opts = [
     cfg.BoolOpt("debug", help="Enable debug logging", default=False),
-    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml", default="service"),
+    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml (defaults to OS_CLOUD env)", default=default_cloud),
 ]
 CONF.register_cli_opts(opts)
 CONF(sys.argv[1:], project=PROJECT_NAME)

@@ -1,13 +1,17 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 from datetime import datetime, timezone
 import sys
+import os
 from time import sleep
 
 from dateutil import parser
 from loguru import logger
 import openstack
 from oslo_config import cfg
+
+default_cloud = os.getenv("OS_CLOUD") or "service"
 
 PROJECT_NAME = "amphora"
 CONF = cfg.CONF
@@ -16,7 +20,7 @@ opts = [
     cfg.BoolOpt("force", help="Force rotation of amphorae", default=False),
     cfg.BoolOpt("restore", help="Restore all amphorae in state ERROR", default=False),
     cfg.BoolOpt("rotate", help="Rotate all amphorae older than 30 days", default=False),
-    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml", default="service"),
+    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml (defaults to OS_CLOUD env)", default=default_cloud),
     cfg.StrOpt("loadbalancer", help="Loadbalancer ID", default=None),
 ]
 CONF.register_cli_opts(opts)

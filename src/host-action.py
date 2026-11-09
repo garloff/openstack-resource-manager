@@ -1,13 +1,17 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import time
 import sys
+import os
 
 from loguru import logger
 import openstack
 from oslo_config import cfg
 from tabulate import tabulate
 from prompt_toolkit import prompt
+
+default_cloud = os.getenv("OS_CLOUD") or "service"
 
 PROJECT_NAME = "host-action"
 CONF = cfg.CONF
@@ -18,7 +22,7 @@ opts = [
     cfg.BoolOpt("wait", help="Wait for completion of action", default=True),
     cfg.BoolOpt("yes", help="Always say yes", default=False),
     cfg.StrOpt("action", help="Action", default=None),
-    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml", default="service"),
+    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml (defaults to OS_CLOUD env)", default=default_cloud),
     cfg.StrOpt("host", help="Compute node", default=""),
     cfg.StrOpt("input", help="Additional input", default=""),
 ]
