@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import sys
+import os
 from time import sleep
 
 from loguru import logger
@@ -8,6 +10,8 @@ import openstack
 from oslo_config import cfg
 from prompt_toolkit import prompt
 import pymysql
+
+default_cloud = os.getenv("OS_CLOUD") or "service"
 
 PROJECT_NAME = "loadbalancer"
 CONF = cfg.CONF
@@ -21,7 +25,7 @@ opts = [
         default="provisioning_status",
         choices=["provisioning_status", "operating_status"],
     ),
-    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml", default="service"),
+    cfg.StrOpt("cloud", help="Cloud name in clouds.yaml (defaults to OS_CLOUD env)", default=default_cloud),
 ]
 CONF.register_cli_opts(opts)
 CONF(sys.argv[1:], project=PROJECT_NAME)
